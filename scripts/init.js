@@ -14,6 +14,10 @@ if (!db.getCollectionNames().includes("fit_file_data")) {
         ],
         additionalProperties: false,
         properties: {
+					_id: {
+						bsonType: "objectId",
+						description: "Identificador único del documento"
+					},
           hiking_trail_code: {
             bsonType: "string",
             description: "Identificador único de la ruta de senderismo en la base de datos HikingTrailService. Debe ser una cadena de caracteres y es obligatorio.",
@@ -67,7 +71,7 @@ if (!db.getCollectionNames().includes("fit_file_data")) {
             description: "Se requiere un solo mensaje de actividad en un archivo de actividad FIT. Este mensaje incluye las propiedades 'Marca de tiempo local' y 'Conteo de sesiones'. La marca de tiempo local determina la diferencia horaria que se puede aplicar a todas las marcas de tiempo del archivo. La mayoría de los dispositivos graban archivos FIT en tiempo real, y el conteo de sesiones se desconoce hasta el final de la grabación. Por ello, el mensaje de actividad suele ser el último del archivo. Es posible que falte si el archivo se trunca o se corrompe, por lo que se debe minimizar la dependencia del mensaje de actividad en el posprocesamiento de los archivos de actividad.",
             properties: {
 							timestamp: {
-								bsonType: ["timestamp", "null"],
+								bsonType: ["date", "null"],
 								description: "Marca temporal principal de la actividad",
 							},
 							totalTimerTime: {
@@ -91,7 +95,7 @@ if (!db.getCollectionNames().includes("fit_file_data")) {
 								description: "Tipo específico de evento (enum)",
 							},
 							localTimestamp: {
-								bsonType: ["timestamp", "null"],
+								bsonType: ["date", "null"],
 								description: "Marca temporal local",
 							},
 							eventGroup: {
@@ -111,7 +115,7 @@ if (!db.getCollectionNames().includes("fit_file_data")) {
 									description: "Índice del mensaje",
 								},
 								timestamp: {
-									bsonType: "timestamp",
+									bsonType: "date",
 									description: "Marca temporal principal",
 								},
 								event: {
@@ -190,6 +194,10 @@ if (!db.getCollectionNames().includes("fit_file_data")) {
 									bsonType: ["int", "null"],
 									description: "Frecuencia cardíaca máxima (lpm)",
 								},
+								minHeartRate: {
+									bsonType: ["int", "null"],
+									description: "Frecuencia cardíaca mínima (lpm)",
+								},
 								avgCadence: {
 									bsonType: ["int", "null"],
 									description: "Cadencia media"
@@ -221,6 +229,18 @@ if (!db.getCollectionNames().includes("fit_file_data")) {
 								totalDescent: {
 									bsonType: ["int", "null"],
 									description: "Descenso total (m)",
+								},
+								avgAltitude: {
+									bsonType: ["double", "null"],
+									description: "Altitud media (m)",
+								},
+								maxAltitude: {
+									bsonType: ["double", "null"],
+									description: "Altitud máxima (m)",
+								},
+								minAltitude: {
+									bsonType: ["double", "null"],
+									description: "Altitud mínima (m)",
 								},
 								totalTrainingEffect: {
 									bsonType: ["double", "null"],
@@ -296,7 +316,7 @@ if (!db.getCollectionNames().includes("fit_file_data")) {
               bsonType: "object",
               properties: {
 								timestamp: {
-									bsonType: "timestamp",
+									bsonType: "date",
 									description: "Marca temporal principal de la vuelta"
 								},
 								start_time: {
@@ -400,27 +420,27 @@ if (!db.getCollectionNames().includes("fit_file_data")) {
             bsonType: "array",
             items: {
               bsonType: "object",
-              required: ["timestamp", "position_lat", "position_long", "altitude"],
+              required: ["timestamp"],
 							description: "Los mensajes de registro almacenan en los archivos de actividad los valores de coordenadas GPS, velocidad, distancia, frecuencia cardíaca, potencia, etc., en tiempo real. Los registros contienen marcas de tiempo con una resolución de un segundo, aunque los dispositivos pueden almacenar datos a menor velocidad. Los dispositivos también pueden utilizar la técnica de Grabación Inteligente, lo que resulta en la grabación de mensajes de registro a intervalos irregulares. Los datos de los mensajes de registro se muestran comúnmente en gráficos y como recorridos en un mapa. Se requiere una marca de tiempo y al menos otro valor para cada mensaje de registro.",
               properties: {
 								timestamp: {
-									bsonType: "timestamp",
+									bsonType: "date",
 									description: "Marca temporal principal del registro"
 								},
 								position_lat: {
-									bsonType: "int",
-									minimum: -90,
-									maximum: 90,
+									bsonType: ["int", "long", "null"],
+									minimum: -900000000,
+									maximum: 900000000,
 									description: "Latitud en semiciclos (de -90 a 90 grados, requiere conversión a grados decimales)"
 								},
 								position_long: {
-									bsonType: "int",
-									minimum: -180,
-									maximum: 180,
+									bsonType: ["int", "long", "null"],
+									minimum: -1800000000,
+									maximum: 1800000000,
 									description: "Longitud en semiciclos (de -180 a 180 grados, requiere conversión a grados decimales)"
 								},
 								altitude: {
-									bsonType: "double",
+									bsonType: ["double", "null"],
 									minimum: 0,
 									description: "Altitud en metros"
 								},
@@ -465,7 +485,6 @@ if (!db.getCollectionNames().includes("fit_file_data")) {
 								},
 								vertical_speed: {
 									bsonType: ["double", "null"],
-									minimum: 0,
 									description: "Velocidad vertical en m/s"
 								}
               }
