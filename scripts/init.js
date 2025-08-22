@@ -131,11 +131,11 @@ if (!db.getCollectionNames().includes("fit_file_data")) {
 									description: "Hora de inicio de la sesión",
 								},
 								startPositionLat: {
-									bsonType: ["int", "null"],
+									bsonType: ["int", "double", "null"],
 									description: "Latitud inicial (semicircles)",
 								},
 								startPositionLong: {
-									bsonType: ["int", "null"],
+									bsonType: ["int", "double", "null"],
 									description: "Longitud inicial (semicircles)",
 								},
 								sport: {
@@ -263,19 +263,19 @@ if (!db.getCollectionNames().includes("fit_file_data")) {
 									description: "Trigger de la sesión",
 								},
 								necLat: {
-									bsonType: ["int", "null"],
+									bsonType: ["int", "double", "null"],
 									description: "NEC Lat",
 								},
 								necLong: {
-									bsonType: ["int", "null"],
+									bsonType: ["int", "double", "null"],
 									description: "NEC Long",
 								},
 								swcLat: {
-									bsonType: ["int", "null"],
+									bsonType: ["int", "double", "null"],
 									description: "SWC Lat"
 								},
 								swcLong: {
-									bsonType: ["int", "null"],
+									bsonType: ["int", "double", "null"],
 									description: "SWC Long"
 								},
 								numLengths: {
@@ -299,11 +299,11 @@ if (!db.getCollectionNames().includes("fit_file_data")) {
 									description: "Balance izquierda/derecha",
 								},
 								endPositionLat: {
-									bsonType: ["int", "null"],
+									bsonType: ["int", "double", "null"],
 									description: "Latitud final",
 								},
 								endPositionLong: {
-									bsonType: ["int", "null"],
+									bsonType: ["int", "double", "null"],
 									description: "Longitud final",
 								}
               }
@@ -428,13 +428,13 @@ if (!db.getCollectionNames().includes("fit_file_data")) {
 									description: "Marca temporal principal del registro"
 								},
 								position_lat: {
-									bsonType: ["int", "long", "null"],
+									bsonType: ["int", "long", "double", "null"],
 									minimum: -900000000,
 									maximum: 900000000,
 									description: "Latitud en semiciclos (de -90 a 90 grados, requiere conversión a grados decimales)"
 								},
 								position_long: {
-									bsonType: ["int", "long", "null"],
+									bsonType: ["int", "long", "double", "null"],
 									minimum: -1800000000,
 									maximum: 1800000000,
 									description: "Longitud en semiciclos (de -180 a 180 grados, requiere conversión a grados decimales)"
